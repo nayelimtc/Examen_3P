@@ -18,8 +18,8 @@ public class ProductoDTO {
     private String nombre;
 
     @NotNull(message = "La existencia es obligatoria")
-    private Integer existencia;
+    private BigDecimal existencia;
 
     @NotNull(message = "El precio es obligatorio")
     private BigDecimal precio;
-} 
+}

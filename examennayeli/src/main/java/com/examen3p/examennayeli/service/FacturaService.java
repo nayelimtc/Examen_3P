@@ -60,11 +60,16 @@ public class FacturaService {
 
         FacturaDetalle detalle = crearDetalle(producto, detalleDTO);
         actualizarTotalesFactura(factura, detalle);
+
+        // Actualizar existencias del producto
+        productoClient.actualizarExistencias(producto.getCodProducto(), detalleDTO.getCantidad());
     }
 
     private void validarExistencias(ProductoDTO producto, FacturaDetalleDTO detalleDTO) {
         if (producto.getExistencia().compareTo(detalleDTO.getCantidad()) < 0) {
-            throw new ProductoSinExistenciasException(detalleDTO.getCodProducto());
+            log.error("Existencias insuficientes para el producto {}. Disponible: {}, Solicitado: {}",
+                    producto.getCodProducto(), producto.getExistencia(), detalleDTO.getCantidad());
+            throw new ProductoSinExistenciasException(producto.getCodProducto());
         }
     }
 
